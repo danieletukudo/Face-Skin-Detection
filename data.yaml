@@ -1,0 +1,13 @@
+train: /Users/mac/PycharmProjects/faceskin/Skin Problems Detection.v8i.yolov8/train/images
+val: /Users/mac/PycharmProjects/faceskin/Skin Problems Detection.v8i.yolov8/valid/images
+test: /Users/mac/PycharmProjects/faceskin/Skin Problems Detection.v8i.yolov8/test/images
+
+nc: 12
+names: ['Dark Circle', 'Melasma', 'PIH', 'blackhead', 'cyst', 'freckles', 'nodule', 'papule', 'pustule', 'skin-pore', 'whitehead', 'wrinkle']
+
+roboflow:
+  workspace: nguyen-huyen-cvq6e
+  project: skin-problems-detection-jp4jv
+  version: 8
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/nguyen-huyen-cvq6e/skin-problems-detection-jp4jv/dataset/8
