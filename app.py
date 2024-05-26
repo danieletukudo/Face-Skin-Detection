@@ -34,7 +34,7 @@ def allowed_file(filename):
 # Endpoint to process the uploaded image and detect faces
 @app.route('/search', methods=['POST'])
 def run_model():
-    try:
+    # try:
         input_image = request.files['file']  # Get the uploaded file
         if input_image.filename == '':  # Check if no file was uploaded
             app.logger.warning('No files inserted yet')
@@ -62,9 +62,9 @@ def run_model():
 
         else:
             return jsonify({'response': 'Please upload the right picture file with an extension of png, jpg, or jpeg'})
-    except Exception as e:
-        app.logger.error(f'Error: {str(e)}')  # Debug: Log any exceptions
-        return jsonify({'response': 'invalid input'})
+    # except Exception as e:
+    #     app.logger.error(f'Error: {str(e)}')  # Debug: Log any exceptions
+    #     return jsonify({'response': 'invalid input'})
 
 
 if __name__ == '__main__':
