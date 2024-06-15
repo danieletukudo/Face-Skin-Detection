@@ -64,7 +64,7 @@ def run_model():
 
                 os.remove(img_path)  # Remove the original uploaded image
 
-                return jsonify({'The following face skin diseases were detected': seen_diseases,
+                return jsonify({'Skin Issues': seen_diseases,
                                 'image_url': img_url}), 202  # Return the URL of the processed image
 
         else:
