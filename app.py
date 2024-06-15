@@ -46,7 +46,12 @@ def run_model():
             input_image.save(img_path)  # Save the uploaded image
 
             model = recognize_image()  # Create an instance of the recognize_image class
-            image_name = model.check_for_skin(image_path=img_path)  # Process the image
+            result = model.check_for_skin(image_path=img_path)  # Process the image
+            image_name = result[0]
+
+            seen_diseases = result[1]
+
+            print(seen_diseases)
 
             if image_name == "face_not_found":  # Check if a face was not detected
                 return jsonify(
@@ -58,7 +63,9 @@ def run_model():
                 app.logger.info(f'Generated URL: {img_url}')  # Debug: Log the generated URL
 
                 os.remove(img_path)  # Remove the original uploaded image
-                return jsonify({'image_url': img_url}), 202  # Return the URL of the processed image
+
+                return jsonify({'The following face skin diseases were detected': seen_diseases,
+                                'image_url': img_url}), 202  # Return the URL of the processed image
 
         else:
             return jsonify({'response': 'Please upload the right picture file with an extension of png, jpg, or jpeg'})

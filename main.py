@@ -1,7 +1,8 @@
 import sys  # Import the sys module for system-specific parameters and functions
-from typing import Tuple, List, Union, Any  # Import type hints for better code readability and type checking
+from typing import Tuple, List, Union, Any
 import cv2  # Import OpenCV for image processing
 from numpy import ndarray, dtype, generic  # Import specific types from numpy for array handling
+from typing_extensions import LiteralString
 from ultralytics import YOLO  # Import the YOLO object detection model from the ultralytics library
 import uuid  # Import the uuid module to generate unique identifiers
 
@@ -69,7 +70,7 @@ class recognize_image:  # Define a class for image recognition
             else:
                 return False  # If confidence is low, face is not detected
 
-    def check_for_skin(self, image_path: str) -> str:
+    def check_for_skin(self, image_path: str) -> list[Union[str, LiteralString]]:
         """
         Check for skin (faces) in an image and process detections.
 
@@ -88,8 +89,8 @@ class recognize_image:  # Define a class for image recognition
             pass  # Continue processing
 
         else:  # If no face is detected
-            return "face_not_found"  # Return a message indicating no face found
-
+            return ["face_not_found"]  # Return a message indicating no face found
+        detected_diseases = set()
         for i, r in enumerate(model):  # Iterate over the model results
             detections = r.boxes.data.tolist()  # Get detection data as a list
             names = r.names  # Get class names
@@ -98,6 +99,7 @@ class recognize_image:  # Define a class for image recognition
             for labels, detection in zip(classes, detections):  # Iterate over detections and labels
                 label = names[labels]  # Get the label name
                 x1, y1, x2, y2, score, _ = detection  # Extract bounding box coordinates and score
+                detected_diseases.add(label)
 
                 cv2.putText(image, str(label), (int(x1), int(y1 - 2)),
                             cv2.FONT_HERSHEY_COMPLEX_SMALL, 0.9,
@@ -110,12 +112,16 @@ class recognize_image:  # Define a class for image recognition
         image_name = f"{uuid.uuid4()}"  # Generate a unique image name
         cv2.imwrite(f"static1/{image_name}.jpg", image)  # Save the processed image
 
-        return image_name  # Return the unique image name
+        sickness_name = ", ".join(detected_diseases)
+        print(sickness_name)
+
+        return [image_name, sickness_name]  # Return the unique image name
 
 
 if __name__ == "__main__":  # Main block to run the script
     de = recognize_image()  # Create an instance of the recognize_image class
-    result = de.check_for_skin(
-        "img_1.png")  # Check for skin (face) in the given image
+    result = de.check_for_skin("1.jpg")  # Check for skin (face) in the given image
 
     print(result)  # Print the result
+
+
